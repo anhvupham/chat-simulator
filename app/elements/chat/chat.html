@@ -107,9 +107,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </main>
         <aside>
             <ul>
-                <li on-click="chatTo" data-id="steve">Steve Roger</li>
-                <li on-click="chatTo" data-id="tony">Tony Stark</li>
-                <li on-click="chatTo" data-id="peter">Peter Parker</li>
+            <template is="dom-repeat" items="{{list}}" as="friend">
+                <li on-click="chatTo">{{friend.name}}</li>
+            </template>
             </ul>
         </aside>
     </template>
@@ -122,7 +122,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     type: Array,
                     notify: true,
                     value: [{
-                        name: 'steve',
+                        id: 'steve',
+                        name: 'Steve Roger',
                         messages: [{
                             from: 0,
                             value: 'Hello'
@@ -131,7 +132,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             value: 'How are you ?'
                         }]
                     }, {
-                        name: 'tony',
+                        id: 'tony',
+                        name: 'Tony Stark',
                         messages: [{
                             from: 0,
                             value: 'Hey'
@@ -140,7 +142,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             value: 'Have you watch Civil War ?'
                         }]
                     }, {
-                        name: 'peter',
+                        id: 'peter',
+                        name: 'Peter Parker',
                         messages: [{
                             from: 0,
                             value: 'Remember me ?'
@@ -167,9 +170,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.$['input-message'].value = "";
             },
             chatTo: function(e) {
-                var id = e.target.getAttribute('data-id');
+                // var id = e.target.getAttribute('data-id');
+                var id = e.model.friend.id;
                 var temp = this.list.filter(function(x) {
-                    return x.name == id;
+                    return x.id == id;
                 })[0];
                 if (temp) this.set('current', temp);
             }
