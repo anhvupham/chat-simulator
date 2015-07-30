@@ -25,7 +25,7 @@ This lets you run `gulp` and `bower` from the command line.
 4)  Install the starter kit's local `npm` and `bower` dependencies.
 
 ```sh
-cd polymer-starter-kit && npm install && bower install
+cd chat-simulator && npm install && bower install
 ```
 
 5)  Run command below and test on localhost:3000
