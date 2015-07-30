@@ -1,0 +1,179 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<dom-module id="simulator-chat">
+    <style>
+    :host {
+        display: block;
+        height: 100%;
+    }
+    
+    :host * {
+        box-sizing: border-box;
+    }
+    
+    aside {
+        float: left;
+        width: 30%;
+    }
+    
+    main {
+        width: 70%;
+        float: left;
+        height: 100%;
+        background-color: #fff;
+        height: 100%;
+    }
+    
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    aside > ul > li {
+        line-height: 40px;
+        border-top: 1px solid #ccc;
+        text-align: center;
+    }
+    
+    aside > ul > li:first-of-type {
+        border-top: 0;
+    }
+    
+    aside > ul > li:hover {
+        cursor: pointer;
+        background-color: rgba(200, 200, 200, 0.5);
+    }
+    
+    main {
+        position: relative;
+    }
+    
+    main section {
+        width: 100%;
+        padding: 10px;
+    }
+    
+    main section:first-child ul > li {
+        line-height: 30px;
+        border-radius: 3px;
+        background-color: rgba(63, 81, 181, 0.2);
+        margin-bottom: 10px;
+        padding: 5px;
+        width: auto;
+        height: 80%;
+        overflow: auto;
+    }
+
+    main section:first-child ul > li.right {
+        text-align: right
+    }
+    
+    main section:nth-of-type(2) {
+        position: absolute;
+        bottom: 5px;
+    }
+    
+    main section:nth-of-type(2) paper-input {
+        display: inline-block;
+        width: 85%;
+    }
+    
+    main section:nth-of-type(2) paper-icon-button {
+        display: inline-block;
+        /*width: 20%;*/
+    }
+    </style>
+    <template>
+        <main>
+            <section>
+                <ul>
+                    <template is="dom-repeat" items="{{current.messages}}" as="message">
+                        <li class$="{{returnClass(message.from)}}">{{message.value}}</li>
+                    </template>
+                </ul>
+            </section>
+            <section>
+                <paper-input label="Input Message" id="input-message"></paper-input>
+                <paper-icon-button icon="send" on-click="send"></paper-icon-button>
+            </section>
+        </main>
+        <aside>
+            <ul>
+                <li on-click="chatTo" data-id="steve">Steve Roger</li>
+                <li on-click="chatTo" data-id="tony">Tony Stark</li>
+                <li on-click="chatTo" data-id="peter">Peter Parker</li>
+            </ul>
+        </aside>
+    </template>
+    <script>
+    (function() {
+        Polymer({
+            is: 'simulator-chat',
+            properties: {
+                list: {
+                    type: Array,
+                    notify: true,
+                    value: [{
+                        name: 'steve',
+                        messages: [{
+                            from: 0,
+                            value: 'Hello'
+                        }, {
+                            from: 0,
+                            value: 'How are you ?'
+                        }]
+                    }, {
+                        name: 'tony',
+                        messages: [{
+                            from: 0,
+                            value: 'Hey'
+                        }, {
+                            from: 0,
+                            value: 'Have you watch Civil War ?'
+                        }]
+                    }, {
+                        name: 'peter',
+                        messages: [{
+                            from: 0,
+                            value: 'Remember me ?'
+                        }, ]
+                    }]
+                },
+                current: {
+                    type: Object,
+                    notify: true
+                }
+            },
+            returnClass: function(from){
+                return from ? 'right' : '';
+            },
+            send: function(e) {
+                if (!this.current) {
+                    alert("you have'nt choose friend chat");
+                    return;
+                }
+                this.push('current.messages', {
+                    from: 1,
+                    value: this.$['input-message'].value
+                });
+                this.$['input-message'].value = "";
+            },
+            chatTo: function(e) {
+                var id = e.target.getAttribute('data-id');
+                var temp = this.list.filter(function(x) {
+                    return x.name == id;
+                })[0];
+                if (temp) this.set('current', temp);
+            }
+        });
+    })();
+    </script>
+</dom-module>
